@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'rosin'
+            keyPassword 'po1884678'
+            storeFile file('E:/AndroidStudioDocument/KeyStore/releasekey.jks')
+            storePassword 'po1884678'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
-
     defaultConfig {
         applicationId "com.zy.mapclock"
         minSdkVersion 15
