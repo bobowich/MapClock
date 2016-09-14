@@ -9,7 +9,7 @@ android {
             storePassword 'po1884678'
         }
     }
-    compileSdkVersion 23
+    compileSdkVersion 'Google Inc.:Google APIs:23'
     buildToolsVersion "23.0.1"
     defaultConfig {
         applicationId "com.zy.mapclock"

@@ -11,7 +11,7 @@
     tools:context=".activity.MainActivity">
 
     <com.baidu.mapapi.map.MapView
-        android:id="@+id/bmapView"
+        android:id="@+id/mapView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:clickable="true" />
