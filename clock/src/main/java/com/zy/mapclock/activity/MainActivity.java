@@ -11,14 +11,14 @@ import com.zy.mapclock.R;
 
 public class MainActivity extends Activity {
     public static final String TAG = MainActivity.class.getSimpleName();
-    MapView mMapView;
+    //MapView mMapView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mMapView = (MapView) findViewById(R.id.mapView);
+        //mMapView = (MapView) findViewById(R.id.mapView);
     }
-
+    /*
     @Override
     protected void onResume() {
         super.onResume();
@@ -36,6 +36,7 @@ public class MainActivity extends Activity {
         super.onPause();
         mMapView.onPause();
     }
+    */
 
     /**
      * 重写onBackPressed()方法，弹出退出提示框
