@@ -14,7 +14,7 @@ import android.view.ViewGroup;
  * Created by bobowich
  * Time: 2016/9/14.
  */
-public class SlideLayout extends ViewGroup {
+public class SlideLayout extends ViewGroup implements DragListener {
     public static final String TAG = SlideLayout.class.getSimpleName();
     View menuLayout;
     View contentLayout;
@@ -45,9 +45,11 @@ public class SlideLayout extends ViewGroup {
                     Log.d(TAG, "onViewReleased: " + releasedChild.getLeft());
                     float offset = (width + releasedChild.getLeft()) * 1.0f / width;
                     if (xvel > 0 || (xvel == 0 && offset > 0.5f)) {
-                        mDragHelper.settleCapturedViewAt(0, 0);
+                        //mDragHelper.settleCapturedViewAt(0, 0);
+                        open();
                     } else {
-                        mDragHelper.settleCapturedViewAt(-width, 0);
+                        //mDragHelper.settleCapturedViewAt(-width, 0);
+                        close();
                     }
                     invalidate();
                 }
@@ -202,6 +204,26 @@ public class SlideLayout extends ViewGroup {
         return new MarginLayoutParams(getContext(),attrs);
     }
 
-    
+    @Override
+    public void open() {
+        mDragHelper.settleCapturedViewAt(0, 0);
+    }
 
+    @Override
+    public void close() {
+        mDragHelper.settleCapturedViewAt(-menuLayout.getWidth(), 0);
+    }
+
+
+
+
+
+}
+/**
+ * 提供Drag操作的回调接口,最好定义在同一个包下的其他文件中，否则会造成循环继承
+ */
+interface DragListener {
+    void open();
+    void close();
+    //void onDrag(float offset);
 }

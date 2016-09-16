@@ -5,20 +5,28 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.baidu.mapapi.map.MapView;
 import com.zy.mapclock.R;
 
 public class MainActivity extends Activity {
     public static final String TAG = MainActivity.class.getSimpleName();
-    //MapView mMapView;
+    public static final String[] array = {"定位", "设置", "关于"};
+    ListView mListView;
+    MapView mMapView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //mMapView = (MapView) findViewById(R.id.mapView);
+        mMapView = (MapView) findViewById(R.id.mapview);
+        mListView = (ListView) findViewById(R.id.listview1);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.listview_item, array);
+        mListView.setAdapter(adapter);
     }
-    /*
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -36,7 +44,7 @@ public class MainActivity extends Activity {
         super.onPause();
         mMapView.onPause();
     }
-    */
+
 
     /**
      * 重写onBackPressed()方法，弹出退出提示框
