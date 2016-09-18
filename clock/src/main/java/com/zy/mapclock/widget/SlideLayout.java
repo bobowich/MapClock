@@ -1,11 +1,11 @@
 package com.zy.mapclock.widget;
 
 import android.content.Context;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +16,13 @@ import android.view.ViewGroup;
  */
 public class SlideLayout extends ViewGroup implements DragListener {
     public static final String TAG = SlideLayout.class.getSimpleName();
+    float lastX ;
+    float lastY ;
     View menuLayout;
     View contentLayout;
     private ViewDragHelper mDragHelper;
     float mOffset ;
-    //GestureDetector mGestureDetector;
+    GestureDetector mGestureDetector;
     public SlideLayout(Context context) {
         this(context,null);
     }
@@ -28,7 +30,7 @@ public class SlideLayout extends ViewGroup implements DragListener {
     public SlideLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         Log.d(TAG, "SlideLayout: constractor");
-        //mGestureDetector = new GestureDetector(getContext(), new MyGestureListener());
+        mGestureDetector = new GestureDetector(getContext(), new MyGestureListener());
 
         mDragHelper = ViewDragHelper.create(this, 1.0f, new ViewDragHelper.Callback() {
             @Override
@@ -81,26 +83,27 @@ public class SlideLayout extends ViewGroup implements DragListener {
                 changedView.setVisibility(offset == 0 ? INVISIBLE : VISIBLE);
                 requestLayout();
             }
-            /*
+
             @Override
             public int getViewHorizontalDragRange(View child) {
                 return child == menuLayout ? menuLayout.getWidth() : 0;
             }
-            */
+
         });
         mDragHelper.setEdgeTrackingEnabled(ViewDragHelper.EDGE_LEFT);
     }
-    /*
+
     class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            if (Math.abs(distanceX) > Math.abs(distanceY)) {
+            if (Math.abs(e1.getX() - e2.getX()) > Math.abs(e1.getY() - e2.getY())) {
+                Log.d(TAG, "onScroll: true");
                 return true;
             }
             return false;
         }
     }
-    */
+
 
 
     @Override
@@ -164,12 +167,39 @@ public class SlideLayout extends ViewGroup implements DragListener {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         Log.d(TAG, "onInterceptTouchEvent: called");
-        final int action = MotionEventCompat.getActionMasked(ev);
-        if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
-            mDragHelper.cancel();
-            return false;
+        float x = ev.getX();
+        float y = ev.getY();
+
+        boolean intercept = false;
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mDragHelper.shouldInterceptTouchEvent(ev);
+
+                intercept = false;
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+
+                if (mDragHelper.shouldInterceptTouchEvent(ev) && (Math.abs(x - lastX) > Math.abs(y - lastY))) {
+
+                    intercept = true;
+                } else {
+                    intercept = false;
+                }
+                break;
+
+            case MotionEvent.ACTION_UP:
+                mDragHelper.shouldInterceptTouchEvent(ev);
+                intercept = false;
+                break;
+            default:
+                break;
         }
-        return mDragHelper.shouldInterceptTouchEvent(ev);
+        lastX = x;
+        lastY = y;
+
+        Log.d(TAG, "onInterceptTouchEvent: " + intercept + "MotionEvent :" + ev.getAction());
+        return intercept;
     }
 
     @Override

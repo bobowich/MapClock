@@ -6,24 +6,27 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import com.baidu.mapapi.map.MapView;
 import com.zy.mapclock.R;
 
 public class MainActivity extends Activity {
     public static final String TAG = MainActivity.class.getSimpleName();
-    public static final String[] array = {"定位", "设置", "关于"};
+    private String[] array = {"定位", "设置", "关于", "设置", "关于", "设置", "设置", "关于","设置", "设置","定位", "设置", "关于"};
     ListView mListView;
     MapView mMapView;
+    SearchView mSearchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mMapView = (MapView) findViewById(R.id.mapview);
         mListView = (ListView) findViewById(R.id.listview1);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.listview_item, array);
+        mSearchView = (SearchView)findViewById(R.id.search_view1);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, array);
         mListView.setAdapter(adapter);
     }
 
@@ -44,7 +47,6 @@ public class MainActivity extends Activity {
         super.onPause();
         mMapView.onPause();
     }
-
 
     /**
      * 重写onBackPressed()方法，弹出退出提示框
